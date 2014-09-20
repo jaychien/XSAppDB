@@ -1,0 +1,20 @@
+[
+    {
+        "name": "台積電大單買進對應買權買進訊號",
+        "guid": "E1718FDD-E721-4a03-B06F-E7AA86D88435",
+        "startTime": "08:30",
+        "endTime": "14:30",
+        "runType":0,
+        "status":0,
+        "createDate":"2014-09-19 15:26:37"
+    },
+    {
+        "name": "台積電大單賣出對應賣權買進訊號",
+        "guid": "C9A0A669-FA52-4dae-B531-E906C3638D01",
+        "startTime": "08:30",
+        "endTime": "14:30",
+        "runType":0,
+        "status":0,
+        "createDate":"2014-09-19 15:26:37"
+    }
+]

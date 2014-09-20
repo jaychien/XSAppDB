@@ -1,0 +1,14 @@
+node_modules/
+
+upload/
+testfiles/
+notused/
+py/
+data/
+
+*.DSR
+
+# WebStorm file
+#
+workspace.xml
+

@@ -1,0 +1,70 @@
+// XS AppDB (管理策略/Sensor的後台)
+//
+
+-----------------------------
+功能:
+-----------------------------
+- 上傳 DSR & xsb => update database
+- 檢視/設定 Sensor上版的狀態
+- 下載 DSR & xsb
+- 下載 排程檔 (for machine #n)
+
+-----------------------------
+Database設計
+-----------------------------
+- Requirement
+    - 儲存 DSR & xsb (optional: 可以keep之前的版本)
+    - 儲存 上版的狀態
+
+- DatabaseName: XSAppDB
+
+- Collection: AppList
+    - 欄位
+        - Type (1: Sensor, 2: 選股)
+        - GUID (Sensor的GUID)
+        - Name (Sensor的名字)
+        - Folder (Sensor的目錄)
+        - ExecID (0: 不啟用, 1,2,3: 對應的機器)
+            - 可以先把Sensor準備好, 可是不執行
+            - 可以先把Sensor準備好, 安排執行, 可是不對外公開(是否可以對內部公開?)
+
+        - Deleted: Boolean (如果更新後不在DSR內的話, 則視為移除, 必須去market端下架)
+        - LastUpdated: 最後更新日期
+
+- Collection: AppFS
+    - 欄位
+        - DSR (binary data)
+        - XSB (binary data)
+        - LastUpdated: 最後更新日期
+
+
+腳本sqlite
+- XS\Data\DAQ\<UserID>\DAQ_<UserID>_script.sqlite
+- XS\Bin\System\System_Script.sqlite
+	Table: Filter
+	Table: Indicator
+	Table: Sensor
+		Columns: rowid, ID, Name Folder		
+
+
+Sensor sqlite
+- System\Sensor\Preset.sqlite
+- XS\Data\DAQ\<UserID>\XQSensor\SensorList.sqlite
+	Table: SensorList
+	Columns: rowid, ID, Name, SensorType....
+
+	Name is BIG5 ~~
+
+==============================================
+GUID lookup Flow
+==============================================
+- upload script sqlite (DAQ_<UserID>_script.sqlite)
+	- return a html file, 用這個html file來search
+	- 未來可以提供client端的text search功能
+
+- upload sensor sqlite (SensorList.sqlite)
+	- return a html file, 用這個html file來search
+	- 未來可以提供client端的text search功能
+
+
+
