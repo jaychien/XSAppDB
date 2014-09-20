@@ -1,10 +1,11 @@
 /**
  * Created by Derek on 2014/9/19.
  */
+"use strict";
 
 var chai = require('chai');
 var AppDB = require('../lib/appdb.js');
-
+var fs = require('fs');
 var url = 'mongodb://127.0.0.1/XSAppDB';
 
 describe("Test AppDB", function() {
@@ -52,6 +53,28 @@ describe("Test AppDB", function() {
 
     });
 
+    it.skip("test update library", function(done) {
+        var dsrfile = __dirname + "/../data/20140919.DSR";
+        appDB.updateLibrary(appDB.LIBRARY_TYPE.DSR, dsrfile, function(err, result) {
+            if (err != null) {
+                console.log(err);
+            }
+            done();
+        });
+    });
+
+    it("test get library", function(done) {
+        var dsrfile = __dirname + "/../data/20140919-dup.DSR";
+        appDB.getLibrary(appDB.LIBRARY_TYPE.DSR, function(err, library) {
+            if (err != null) {
+                console.log(err);
+            }
+            else if (library != null) {
+                fs.writeFileSync(dsrfile, library.data);
+            }
+            done();
+        });
+    });
 
     function getAllAppObj(done) {
         appDB.getAllAppObj(function(err, appObjs) {

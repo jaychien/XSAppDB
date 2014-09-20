@@ -18,24 +18,24 @@ Database設計
 
 - DatabaseName: XSAppDB
 
-- Collection: AppList
+- Collection: appobjs
     - 欄位
-        - Type (1: Sensor, 2: 選股)
-        - GUID (Sensor的GUID)
-        - Name (Sensor的名字)
-        - Folder (Sensor的目錄)
-        - ExecID (0: 不啟用, 1,2,3: 對應的機器)
+        - type (1: Sensor, 2: 選股)
+        - guid (Sensor的GUID)
+        - name (Sensor的名字)
+        - folder (Sensor的目錄)
+        - execId (0: 不啟用, 1,2,3: 對應的機器)
             - 可以先把Sensor準備好, 可是不執行
             - 可以先把Sensor準備好, 安排執行, 可是不對外公開(是否可以對內部公開?)
 
-        - Deleted: Boolean (如果更新後不在DSR內的話, 則視為移除, 必須去market端下架)
-        - LastUpdated: 最後更新日期
+        - deleted: Boolean (如果更新後不在DSR內的話, 則視為移除, 必須去market端下架)
+        - lastUpdated: 最後更新日期
 
-- Collection: AppFS
+- Collection: libraries
     - 欄位
-        - DSR (binary data)
-        - XSB (binary data)
-        - LastUpdated: 最後更新日期
+        - type (1: dsr, 2: xsb)
+        - data (binary data)
+        - lastUpdated: 最後更新日期
 
 
 腳本sqlite
