@@ -63,7 +63,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test get library", function(done) {
+    it.skip("test get library", function(done) {
         var dsrfile = __dirname + "/../data/20140919-dup.DSR";
         appDB.getLibrary(appDB.LIBRARY_TYPE.DSR, function(err, library) {
             if (err != null) {
