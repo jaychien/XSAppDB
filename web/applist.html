@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="app in appList | filterByName:nameFilter | orderBy:orderByField">
+                        <tr ng-repeat="app in appList | filterByName:nameFilter | filterByPropValue:propNameFilter:propValueFilter | orderBy:orderByField">
                             <td style="vertical-align:middle">{{app.folder}}</td>
                             <td style="vertical-align:middle"><div>{{app.name}}</div><div>{{app.guid}}</div></td>
                             <td style="vertical-align:middle" ng-class="getMarketStatusClassName(app)">{{getMarketStatusString(app)}}</td>
@@ -57,12 +57,12 @@
             </div>
             <div class="col-xs-2">
                 <ul class="list-group" ng-hide="data.error">
-                    <li class="list-group-item"><span class="badge pull-right">{{getTotalCount()}}</span>全部</li>
-                    <li class="list-group-item"><span class="badge pull-right">{{getMarketStatusCount(1)}}</span>上架</li>
-                    <li class="list-group-item list-group-item-warning"><span class="badge pull-right">{{getMarketStatusCount(0)}}</span>尚未上架</li>
-                    <li class="list-group-item list-group-item-danger"><span class="badge pull-right">{{getExecCount(0)}}</span>未指定主機</li>
-                    <li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(1)}}</span>主機(1)</li>
-                    <li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(2)}}</span>主機(2)</li>
+                    <a href="#" ng-click="setPropFilter('','')"><li class="list-group-item"><span class="badge pull-right">{{getTotalCount()}}</span>全部</li></a>
+                    <a href="#" ng-click="setPropFilter('marketStatus',1);"><li class="list-group-item"><span class="badge pull-right">{{getMarketStatusCount(1)}}</span>上架</li></a>
+                    <a href="#" ng-click="setPropFilter('marketStatus',0);"><li class="list-group-item list-group-item-warning"><span class="badge pull-right">{{getMarketStatusCount(0)}}</span>尚未上架</li></a>
+                    <a href="#" ng-click="setPropFilter('execId',0);"><li class="list-group-item list-group-item-danger"><span class="badge pull-right">{{getExecCount(0)}}</span>未指定主機</li></a>
+                    <a href="#" ng-click="setPropFilter('execId',1);"><li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(1)}}</span>主機(1)</li></a>
+                    <a href="#" ng-click="setPropFilter('execId',2);"><li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(2)}}</span>主機(2)</li></a>
                 </ul>
             </div>
         </div>

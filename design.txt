@@ -2,6 +2,26 @@
 //
 
 -----------------------------
+TODO
+-----------------------------
+- use angular to do client side upload (這樣子才能顯示上傳後的處理情形)
+    - http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
+    - https://github.com/danialfarid/angular-file-upload
+
+- 動態產生execId相關的資料
+
+- API to get data
+    - download(xsb, dsr)
+    - getscheduledb(execId)
+
+- 更多的filter功能 (OK)
+    - 全部 = no filter
+    - 以上架 = marketStatus == 1
+    - 未上架 = marketStatus == 0
+    - 未指定主機 = execId == 0
+    - 指定主機(n) = execId == n
+
+-----------------------------
 功能:
 -----------------------------
 - 上傳 DSR & xsb => update database
@@ -40,13 +60,6 @@ Database設計
 -----------------------------
 Site設計
 -----------------------------
-
-Site TODO
-- use angular to do client side upload (這樣子才能顯示上傳後的處理情形)
-    - http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
-    - https://github.com/danialfarid/angular-file-upload
-
--
 
 Site UI entry:
 

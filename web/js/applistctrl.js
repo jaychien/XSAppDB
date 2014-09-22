@@ -10,12 +10,16 @@ angular.module('AppList')
     $scope.appList = [];
     $scope.error = null;
     $scope.nameFilter = '';
+    $scope.propNameFilter = '';
+    $scope.propValueFilter = '';
     $scope.orderByField = '';
+
     $scope.execIdOptions = [
         {value:0, name:'未指定'},
         {value:1, name:'1'},
         {value:2, name:'2'}
     ];
+
     $scope.execIdArray = [
         '未指定',
         '1',
@@ -90,11 +94,28 @@ angular.module('AppList')
             });
     };
 
+    $scope.setPropFilter = function(propName, propValue) {
+        $scope.propNameFilter = propName;
+        $scope.propValueFilter = propValue;
+    };
+
 })
 .filter('filterByName', function() {
     return function(appList, nameFilter) {
         return _.filter(appList, function(app) {
             return app.name.indexOf(nameFilter) >= 0;
+        });
+    };
+})
+.filter('filterByPropValue', function() {
+    return function(appList, propName, propValue) {
+        console.log('filterByPropValue: propName=' + propName + ' propValue=' + propValue);
+        propName = propName || '';
+        return _.filter(appList, function(app) {
+            if (propName == '')
+                return app;
+            else if (app[propName] == propValue)
+                return app;
         });
     };
 });
