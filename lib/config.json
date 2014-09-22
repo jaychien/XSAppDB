@@ -1,4 +1,5 @@
 {
-    "webserver_port" : 7001,
-    "mongodb_url" : "mongodb://127.0.0.1/XSAppDB"
+    "port" : 7001,
+    "mongodb" : "mongodb://127.0.0.1/XSAppDB",
+    "marketserver" : "http://203.67.19.128"
 }

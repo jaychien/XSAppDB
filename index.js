@@ -8,9 +8,10 @@ var options = require('./lib/config.json');
 var WebServer = require('./lib/webserver.js');
 
 options = options || {};
-options.webserver_port = options.webserver_port || 7001;
-options.mongodb_url = options.mongodb_url || "mongodb://127.0.0.1/XSAppDB";
+options.port = options.port || 7001;
+options.mongodb = options.mongodb || "mongodb://127.0.0.1/XSAppDB";
+options.marketserver = options.marketserver || "http://203.67.19.128";
 
-var appDB = new AppDB({url: options.mongodb_url});
+var appDB = new AppDB({mongodb: options.mongodb, marketserver: options.marketserver});
 
-new WebServer(appDB, options).run();
+new WebServer(appDB, options.port).run();

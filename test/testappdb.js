@@ -7,12 +7,13 @@ var chai = require('chai');
 var AppDB = require('../lib/appdb.js');
 var fs = require('fs');
 var url = 'mongodb://127.0.0.1/XSAppDB';
+var marketserver = 'http://203.67.19.128';
 
 describe("Test AppDB", function() {
     var appDB;
 
     before(function(done) {
-        appDB = new AppDB({url: url});
+        appDB = new AppDB({mongodb: url, marketserver: marketserver});
         appDB.on('ready', function(err) {
             done(err);
         });
@@ -84,6 +85,19 @@ describe("Test AppDB", function() {
             }
             done();
         });
+    });
+
+    it("test get market itemlist", function(done) {
+        appDB.getAppMarketItemList(function(err, itemList) {
+            if (err != null) {
+                console.log(err);
+            }
+            else {
+                console.log(itemList);
+            }
+            done();
+        });
+
     });
 
     function getAllAppObj(done) {

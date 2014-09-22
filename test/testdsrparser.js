@@ -5,7 +5,7 @@
 var DSRParser = require('../lib/dsrparser.js');
 
 describe("Test DSRParser", function() {
-    it("test", function(done) {
+    it.skip("test", function(done) {
         var dsr = __dirname  + '/20140919.DSR';
         DSRParser.parseDSR(dsr, function(err, result) {
             if (err != null) {
