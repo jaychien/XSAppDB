@@ -87,7 +87,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test get market itemlist", function(done) {
+    it.skip("test get market itemlist", function(done) {
         appDB.getAppMarketItemList(function(err, itemList) {
             if (err != null) {
                 console.log(err);
@@ -98,6 +98,20 @@ describe("Test AppDB", function() {
             done();
         });
 
+    });
+
+    it.skip("test setAppMarketItemExecId with invalid guid", function(done) {
+        appDB.setAppMarketItemExecId('not existing id', 0, function(err, result) {
+            console.log(err);
+            done();
+        });
+    });
+
+    it("test setAppMarketItemExecId with value guid", function(done) {
+        appDB.setAppMarketItemExecId('88e9f01c-a4fd-4141-acdf-142500f1774b', 1, function(err, result) {
+            console.log(err);
+            done();
+        });
     });
 
     function getAllAppObj(done) {

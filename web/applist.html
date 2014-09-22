@@ -35,7 +35,6 @@
                         <tr>
                             <td><a href="#" ng-click="orderByField='folder';">目錄</a></td>
                             <td><a href="#" ng-click="orderByField='name';">名稱</a></td>
-                            <td>GUID</td>
                             <td class="text-center"><a href="#" ng-click="orderByField='marketStatus';">上架狀態</a></td>
                             <td class="text-center"><a href="#" ng-click="orderByField='marketId';">編號</a></td>
                             <td class="text-center"><a href="#" ng-click="orderByField='execId';">執行主機</a></td>
@@ -43,12 +42,15 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="app in appList | filterByName:nameFilter | orderBy:orderByField">
-                            <td>{{app.folder}}</td>
-                            <td>{{app.name}}</td>
-                            <td>{{app.guid}}</td>
-                            <td ng-class="getMarketStatusClassName(app)">{{getMarketStatusString(app)}}</td>
-                            <td class="text-center">{{app.marketId}}</td>
-                            <td class="text-center">{{app.execId}}</td>
+                            <td style="vertical-align:middle">{{app.folder}}</td>
+                            <td style="vertical-align:middle"><div>{{app.name}}</div><div>{{app.guid}}</div></td>
+                            <td style="vertical-align:middle" ng-class="getMarketStatusClassName(app)">{{getMarketStatusString(app)}}</td>
+                            <td style="vertical-align:middle" class="text-center">{{app.marketId}}</td>
+                            <td style="vertical-align:middle" class="text-center">
+                            <select class="form-control" ng-model="app.execId" ng-change="updateAppItem(app)">
+                                <option ng-repeat="obj in execIdOptions" value="{{obj.value}}" ng-selected="{{obj.value == app.execId}}">{{obj.name}}</option>
+                            </select>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

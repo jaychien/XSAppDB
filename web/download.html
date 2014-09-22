@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="downloadApp">
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <script src="bower_components/angular/angular.min.js"></script>
+    <script>
+        var thisApp = angular.module('downloadApp', []);
+        thisApp.controller('DownloadCtrl', function($scope) {
+            $scope.execIdList = [ '1', '2' ];
+        });
+    </script>
 </head>
-<body>
+<body ng-controller="DownloadCtrl">
     <div class="container">
         <div class="page-header">
             <h3>下載資料</h3>
@@ -16,7 +22,7 @@
         <div class="list-group">
             <a href="download/1" target="_blank" class="list-group-item"><h4>[下載腳本檔(xsb)]</h4></a>
             <a href="download/2" target="_blank" class="list-group-item"><h4>[下載警示檔(dsr)]</h4></a>
-            <a href="#" class="list-group-item"><h4><span class="label label-danger">TODO:</span> [下載排程檔(XSSchedule.db)]</h4></a>
+            <a ng-repeat="execId in execIdList" href="downloadschedule/{{execId}}" class="list-group-item"><h4>[下載排程檔(XSSchedule.db)] <span class="badge">{{execId}}</span></h4></a>
         </div>
     </div>
 </body>

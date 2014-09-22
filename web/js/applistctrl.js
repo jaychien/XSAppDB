@@ -3,14 +3,26 @@
  */
 
 angular.module('AppList')
-.constant('url', '/applist')
-.controller('AppListCtrl', function($scope, $http, url) {
+.controller('AppListCtrl', function($scope, $http) {
+    var url_applist = "/applist";
+    var url_setappexecid = "/setappexecid";
+
     $scope.appList = [];
     $scope.error = null;
     $scope.nameFilter = '';
     $scope.orderByField = '';
+    $scope.execIdOptions = [
+        {value:0, name:'未指定'},
+        {value:1, name:'1'},
+        {value:2, name:'2'}
+    ];
+    $scope.execIdArray = [
+        '未指定',
+        '1',
+        '2'
+    ];
 
-    $http.get(url)
+    $http.get(url_applist)
         .success(function(appList) {
             console.log(appList);
             $scope.appList = appList;
@@ -66,11 +78,16 @@ angular.module('AppList')
         }
     };
 
-    $scope.getExecClassName = function(app) {
-        if (app.execId == 0)
-            return "";
-        else
-            return "";
+    $scope.updateAppItem = function(app) {
+        console.log('Guid=' + app.guid + ' set ExecId=' + app.execId);
+        var url = url_setappexecid + '?guid=' + app.guid + '&execId=' + app.execId;
+        $http.get(url)
+            .success(function() {
+                $scope.error = null;
+            })
+            .error(function(error) {
+                $scope.error = error;
+            });
     };
 
 })
