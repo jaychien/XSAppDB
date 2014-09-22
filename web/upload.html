@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XS市集 - 上傳資料</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+</head>
+<body>
+    <div class="container" style="width:80%;">
+        <div class="page-header">
+            <h3>上傳資料</h3>
+        </div>
+
+        <div class="alert alert-warning" role="alert">
+            目前版本上傳成功後會直接回到本頁，沒有特別的UI提示，上傳失敗時才會顯示錯誤。未來版本會改進這個UI流程。
+        </div>
+
+        <div class="panel">
+            <form action="upload/1" method="post" enctype="multipart/form-data">
+                <div class="input-group">
+                    <span class="input-group-addon input-lg">腳本(xsb)</span>
+                    <input type="file" name="file_1" class="form-control input-lg" id="file_1"/>
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-lg"> 開始上傳 </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <form action="upload/2" method="post" enctype="multipart/form-data">
+                <div class="input-group">
+                    <span class="input-group-addon input-lg">警示(dsr)</span>
+                    <input type="file" name="file_2" class="form-control input-lg" id="file_2"/>
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-lg"> 開始上傳 </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>
