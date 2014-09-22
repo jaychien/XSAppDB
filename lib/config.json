@@ -1,9 +1,4 @@
 {
-    "server": {
-        "port" : 7001
-    },
-
-    "mongodb": {
-        "url" : "mongodb://127.0.0.1/XSAppDB"
-    }
+    "webserver_port" : 7001,
+    "mongodb_url" : "mongodb://127.0.0.1/XSAppDB"
 }

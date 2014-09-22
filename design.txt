@@ -37,34 +37,47 @@ Database設計
         - data (binary data)
         - lastUpdated: 最後更新日期
 
+-----------------------------
+Site設計
+-----------------------------
 
-腳本sqlite
-- XS\Data\DAQ\<UserID>\DAQ_<UserID>_script.sqlite
-- XS\Bin\System\System_Script.sqlite
-	Table: Filter
-	Table: Indicator
-	Table: Sensor
-		Columns: rowid, ID, Name Folder		
+Site UI entry:
+
+- upload html
+    - upload xsb
+    - upload dsr
+    - upload dst (選股,next version)
+
+- download html
+    - download xsb
+    - download dsr
+    - download dst (選股, next version)
+    - download scheduledb (for machine #n)
+
+- show app obj html
+     - search by name
+     - sort by folder
+     - sort by 上架status
+     - sort by execid
+     - set execid
+
+     - side panel display statics
+        - total app objects(not deleted)
+        - 上架 count
+        - not 上架 count
+        - execid count for each execid
+
+- api help
+    - show available api (can i use markdown ?)
 
 
-Sensor sqlite
-- System\Sensor\Preset.sqlite
-- XS\Data\DAQ\<UserID>\XQSensor\SensorList.sqlite
-	Table: SensorList
-	Columns: rowid, ID, Name, SensorType....
+Site api:
 
-	Name is BIG5 ~~
-
-==============================================
-GUID lookup Flow
-==============================================
-- upload script sqlite (DAQ_<UserID>_script.sqlite)
-	- return a html file, 用這個html file來search
-	- 未來可以提供client端的text search功能
-
-- upload sensor sqlite (SensorList.sqlite)
-	- return a html file, 用這個html file來search
-	- 未來可以提供client端的text search功能
-
-
-
+- api: query app objects json
+     - not deleted, 補上架status
+     - deleted, 如果還上架也要show, display different color
+     - UI 分不同顏色：未上架，已上架，未下架
+- api: update app object status
+- api: get xsb data
+- api: get dsr data
+- api: get schedule db data
