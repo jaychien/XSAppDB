@@ -23,23 +23,30 @@
         </div>
         <div class="row grid-row">
             <div class="col-xs-10">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                    <input type="text" class="form-control" placeholder="輸入策略名稱" ng-model="nameFilter">
+                    <div class="input-group-btn">
+                        <button class="btn btn-info" ng-click="nameFilter='';"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </div>
                 <table class="table table-striped table-bordered table-hover" ng-hide="error">
                     <thead>
                         <tr>
-                            <td>目錄</td>
-                            <td>名稱</td>
+                            <td><a href="#" ng-click="orderByField='folder';">目錄</a></td>
+                            <td><a href="#" ng-click="orderByField='name';">名稱</a></td>
                             <td>GUID</td>
-                            <td class="text-center">上架狀態</td>
-                            <td class="text-center">編號</td>
-                            <td class="text-center">執行主機</td>
+                            <td class="text-center"><a href="#" ng-click="orderByField='marketStatus';">上架狀態</a></td>
+                            <td class="text-center"><a href="#" ng-click="orderByField='marketId';">編號</a></td>
+                            <td class="text-center"><a href="#" ng-click="orderByField='execId';">執行主機</a></td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="app in appList">
+                        <tr ng-repeat="app in appList | filterByName:nameFilter | orderBy:orderByField">
                             <td>{{app.folder}}</td>
                             <td>{{app.name}}</td>
                             <td>{{app.guid}}</td>
-                            <td class="text-center">{{app.marketStatus}}</td>
+                            <td ng-class="getMarketStatusClassName(app)">{{getMarketStatusString(app)}}</td>
                             <td class="text-center">{{app.marketId}}</td>
                             <td class="text-center">{{app.execId}}</td>
                         </tr>

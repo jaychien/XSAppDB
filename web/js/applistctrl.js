@@ -7,6 +7,8 @@ angular.module('AppList')
 .controller('AppListCtrl', function($scope, $http, url) {
     $scope.appList = [];
     $scope.error = null;
+    $scope.nameFilter = '';
+    $scope.orderByField = '';
 
     $http.get(url)
         .success(function(appList) {
@@ -38,5 +40,44 @@ angular.module('AppList')
             else
                 return count;
         }, 0);
+    };
+
+    $scope.getMarketStatusClassName = function(app) {
+        if (app.marketStatus == 0) {
+            return "text-center danger";
+        }
+        else if (app.marketStatus == 1) {
+            return "text-center info";
+        }
+        else {
+            return "text-center warn";
+        }
+    };
+
+    $scope.getMarketStatusString = function(app) {
+        if (app.marketStatus == 0) {
+            return "尚未上架";
+        }
+        else if (app.marketStatus == 1) {
+            return "上架";
+        }
+        else {
+            return "下架";
+        }
+    };
+
+    $scope.getExecClassName = function(app) {
+        if (app.execId == 0)
+            return "";
+        else
+            return "";
+    };
+
+})
+.filter('filterByName', function() {
+    return function(appList, nameFilter) {
+        return _.filter(appList, function(app) {
+            return app.name.indexOf(nameFilter) >= 0;
+        });
     };
 });
