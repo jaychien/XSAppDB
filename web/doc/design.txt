@@ -12,6 +12,8 @@ TODO
 
 - 動態產生execId相關的資料
 
+- 提供 API 說明 (OK)
+
 - API to get data (OK)
     - /api/getlibrary/n - download xsb or dsr
     - /api/getschedule/n - download某台機器的schedule資料
@@ -22,7 +24,6 @@ TODO
     - 未上架 = marketStatus == 0
     - 未指定主機 = execId == 0
     - 指定主機(n) = execId == n
-
 
 -----------------------------
 功能:
