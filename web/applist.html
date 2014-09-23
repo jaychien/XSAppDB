@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
     <script>
-        var thisApp = angular.module('AppList', []);
     </script>
     <script src="js/applistctrl.js"></script>
 </head>
@@ -26,6 +27,7 @@
         <div class="alert alert-danger" ng-show="error">
             存取資料時發生錯誤: ({{data.error}}).
         </div>
+        <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
         <div class="row grid-row">
             <div class="col-xs-10">
                 <div class="input-group">

@@ -2,8 +2,8 @@
  * Created by Derek on 2014/9/22.
  */
 
-angular.module('AppList')
-.controller('AppListCtrl', function($scope, $http) {
+var thisApp = angular.module('AppList', ['angularSpinner']);
+thisApp.controller('AppListCtrl', ['$scope', '$http', 'usSpinnerService', function($scope, $http, spinnerService) {
     var url_applist = "/api/applist";
     var url_setappexecid = "/api/setappexecid";
 
@@ -76,19 +76,30 @@ angular.module('AppList')
 
     $scope.updateAppItem = function(app) {
         console.log('Guid=' + app.guid + ' set ExecId=' + app.execId);
+        $scope.startSpinner();
         var url = url_setappexecid + '?guid=' + app.guid + '&execId=' + app.execId;
         $http.get(url)
             .success(function() {
                 $scope.error = null;
+                $scope.stopSpinner();
             })
             .error(function(error) {
                 $scope.error = error;
+                $scope.stopSpinner();
             });
     };
 
     $scope.setPropFilter = function(propName, propValue) {
         $scope.propNameFilter = propName;
         $scope.propValueFilter = propValue;
+    };
+
+    $scope.startSpinner = function() {
+        spinnerService.spin('spinner');
+    };
+
+    $scope.stopSpinner = function() {
+        spinnerService.stop('spinner');
     };
 
     // Return [{value:'0', name:'未指定'},{value:'1', name:'1'}, ..]
@@ -110,7 +121,7 @@ angular.module('AppList')
         return list;
     }
 
-})
+}])
 .filter('filterByName', function() {
     return function(appList, nameFilter) {
         return _.filter(appList, function(app) {
