@@ -74,6 +74,18 @@ thisApp.controller('AppListCtrl', ['$scope', '$http', 'usSpinnerService', functi
         }
     };
 
+    $scope.getTypeString = function(app) {
+        if (app.type == 1) {
+            return "警示";
+        }
+        else if (app.type == 2) {
+            return "選股";
+        }
+        else {
+            return "(" + app.type + ")";
+        }
+    };
+
     $scope.updateAppItem = function(app) {
         console.log('Guid=' + app.guid + ' set ExecId=' + app.execId);
         $scope.startSpinner();

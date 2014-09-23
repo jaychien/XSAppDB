@@ -8,7 +8,7 @@ TODO
     - http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     - https://github.com/danialfarid/angular-file-upload
 
-- 更新資料時的progress indicator
+- 更新資料時的progress indicator (OK)
 
 - 動態產生execId相關的資料 (OK)
 
