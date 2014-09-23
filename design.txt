@@ -8,11 +8,13 @@ TODO
     - http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     - https://github.com/danialfarid/angular-file-upload
 
+- 更新資料時的progress indicator
+
 - 動態產生execId相關的資料
 
-- API to get data
-    - download(xsb, dsr)
-    - getscheduledb(execId)
+- API to get data (OK)
+    - /api/getlibrary/n - download xsb or dsr
+    - /api/getschedule/n - download某台機器的schedule資料
 
 - 更多的filter功能 (OK)
     - 全部 = no filter
@@ -21,7 +23,6 @@ TODO
     - 未指定主機 = execId == 0
     - 指定主機(n) = execId == n
 
-- 更新資料時的progress indicator
 
 -----------------------------
 功能:
