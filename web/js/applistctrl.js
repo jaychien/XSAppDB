@@ -4,8 +4,8 @@
 
 angular.module('AppList')
 .controller('AppListCtrl', function($scope, $http) {
-    var url_applist = "/applist";
-    var url_setappexecid = "/setappexecid";
+    var url_applist = "/api/applist";
+    var url_setappexecid = "/api/setappexecid";
 
     $scope.appList = [];
     $scope.error = null;

@@ -16,7 +16,12 @@
 <body ng-controller="AppListCtrl">
     <div class="container">
         <div class="page-header">
-            <h3>策略管理</h3>
+            <h3>
+                <ol class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li class="active">策略管理</li>
+                </ol>
+            </h3>
         </div>
         <div class="alert alert-danger" ng-show="error">
             存取資料時發生錯誤: ({{data.error}}).

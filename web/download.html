@@ -17,12 +17,17 @@
 <body ng-controller="DownloadCtrl">
     <div class="container">
         <div class="page-header">
-            <h3>下載資料</h3>
+            <h3>
+                <ol class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li class="active">下載資料</li>
+                </ol>
+            </h3>
         </div>
         <div class="list-group">
-            <a href="download/1" target="_blank" class="list-group-item"><h4>[下載腳本檔(xsb)]</h4></a>
-            <a href="download/2" target="_blank" class="list-group-item"><h4>[下載警示檔(dsr)]</h4></a>
-            <a ng-repeat="execId in execIdList" href="downloadschedule/{{execId}}" class="list-group-item"><h4>[下載排程檔(XSSchedule.db)] <span class="badge">{{execId}}</span></h4></a>
+            <a href="/api/download/1" target="_blank" class="list-group-item input-lg">[下載腳本檔(xsb)]</a>
+            <a href="/api/download/2" target="_blank" class="list-group-item input-lg">[下載警示檔(dsr)]</a>
+            <a ng-repeat="execId in execIdList" href="/api/downloadschedule/{{execId}}" class="list-group-item input-lg">[下載排程檔(XSSchedule.db)] <span class="badge">{{execId}}</span></a>
         </div>
     </div>
 </body>
