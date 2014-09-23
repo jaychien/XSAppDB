@@ -4,7 +4,7 @@
 -----------------------------
 TODO
 -----------------------------
-- use angular to do client side upload (這樣子才能顯示上傳後的處理情形)
+- use angular to do client side upload (這樣子才能顯示上傳後的處理情形) (OK)
     - http://stackoverflow.com/questions/18571001/file-upload-using-angularjs
     - https://github.com/danialfarid/angular-file-upload
 

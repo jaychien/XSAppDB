@@ -1,14 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="UploadApp">
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>XS市集 - 上傳資料</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <script src="bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload.min.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+    <script>
+        var thisApp = angular.module('UploadApp', ['angularFileUpload', 'angularSpinner']);
+        thisApp.controller('uploadCtrl', ['$scope', '$upload', 'usSpinnerService', function($scope, $upload, $spinnerService) {
+            $scope.error = null;
+            $scope.successUploadName = '';
+            $scope.onFileSelect = function($files, type) {
+                $scope.startSpinner();
+                $scope.done = false;
+                var file = $files[0];
+                $upload.upload({
+                    url: '/api/upload/' + type,
+                    method:'POST',
+                    file: file,
+                    fileFormDataName: 'file_' + type
+                }).progress(function(evt) {
+                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(data, status, headers) {
+                    console.log('data=' + data);
+                    $scope.error = null;
+                    $scope.stopSpinner();
+                    $scope.successUploadName = file.name;
+                }).error(function(err) {
+                    console.log('err=' + err);
+                    $scope.error = err;
+                    $scope.stopSpinner();
+                    $scope.successUploadName = '';
+                });
+            };
+
+            $scope.startSpinner = function() {
+                $spinnerService.spin('spinner');
+            };
+
+            $scope.stopSpinner = function() {
+                $spinnerService.stop('spinner');
+            };
+
+        }]);
+    </script>
 </head>
-<body>
+<body ng-controller="uploadCtrl">
     <div class="container">
         <div class="page-header">
             <h3>
@@ -19,34 +62,29 @@
             </h3>
         </div>
 
-        <div class="alert alert-warning" role="alert">
-            目前版本上傳成功後會直接回到本頁，沒有特別的UI提示，上傳失敗時才會顯示錯誤。未來版本會改進這個UI流程。
+        <div class="alert alert-danger" role="alert" ng-show="error">
+            上傳資料時發生錯誤: ({{error}}).
+        </div>
+
+        <div class="alert alert-success" role="alert" ng-show="successUploadName">
+            {{successUploadName}} 上傳成功
+        </div>
+
+        <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
+
+        <div class="panel">
+            <div class="input-group">
+                <span class="input-group-addon input-lg">腳本(xsb)</span>
+                <input type="file" class="form-control input-lg" ng-file-select="onFileSelect($files, 1)" onclick="this.value=null"/>
+            </div>
         </div>
 
         <div class="panel">
-            <form action="/api/upload/1" method="post" enctype="multipart/form-data">
-                <div class="input-group">
-                    <span class="input-group-addon input-lg">腳本(xsb)</span>
-                    <input type="file" name="file_1" class="form-control input-lg" id="file_1"/>
-                    <div class="input-group-btn">
-                        <button type="submit" class="btn btn-primary btn-lg"> 開始上傳 </button>
-                    </div>
-                </div>
-            </form>
+            <div class="input-group">
+                <span class="input-group-addon input-lg">警示(dsr)</span>
+                <input type="file" class="form-control input-lg" ng-file-select="onFileSelect($files, 2)" onclick="this.value=null"/>
+            </div>
         </div>
-
-        <div class="panel">
-            <form action="/api/upload/2" method="post" enctype="multipart/form-data">
-                <div class="input-group">
-                    <span class="input-group-addon input-lg">警示(dsr)</span>
-                    <input type="file" name="file_2" class="form-control input-lg" id="file_2"/>
-                    <div class="input-group-btn">
-                        <button type="submit" class="btn btn-primary btn-lg"> 開始上傳 </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
     </div>
 </body>
 </html>
