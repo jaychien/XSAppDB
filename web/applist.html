@@ -66,8 +66,7 @@
                     <a href="#" ng-click="setPropFilter('marketStatus',1);"><li class="list-group-item"><span class="badge pull-right">{{getMarketStatusCount(1)}}</span>上架</li></a>
                     <a href="#" ng-click="setPropFilter('marketStatus',0);"><li class="list-group-item list-group-item-warning"><span class="badge pull-right">{{getMarketStatusCount(0)}}</span>尚未上架</li></a>
                     <a href="#" ng-click="setPropFilter('execId',0);"><li class="list-group-item list-group-item-danger"><span class="badge pull-right">{{getExecCount(0)}}</span>未指定主機</li></a>
-                    <a href="#" ng-click="setPropFilter('execId',1);"><li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(1)}}</span>主機(1)</li></a>
-                    <a href="#" ng-click="setPropFilter('execId',2);"><li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(2)}}</span>主機(2)</li></a>
+                    <a href="#" ng-repeat="execId in execIdList" ng-click="setPropFilter('execId',execId);"><li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(execId)}}</span>主機[{{execId}}]</li></a>
                 </ul>
             </div>
         </div>

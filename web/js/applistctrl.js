@@ -13,18 +13,10 @@ angular.module('AppList')
     $scope.propNameFilter = '';
     $scope.propValueFilter = '';
     $scope.orderByField = '';
+    $scope.maxExecId = 2;           // 目前這是寫在client端的, 以後可以挪到server side
 
-    $scope.execIdOptions = [
-        {value:0, name:'未指定'},
-        {value:1, name:'1'},
-        {value:2, name:'2'}
-    ];
-
-    $scope.execIdArray = [
-        '未指定',
-        '1',
-        '2'
-    ];
+    $scope.execIdOptions = generateExecIdOptions($scope.maxExecId);
+    $scope.execIdList = generateExecIdList($scope.maxExecId);
 
     $http.get(url_applist)
         .success(function(appList) {
@@ -98,6 +90,25 @@ angular.module('AppList')
         $scope.propNameFilter = propName;
         $scope.propValueFilter = propValue;
     };
+
+    // Return [{value:'0', name:'未指定'},{value:'1', name:'1'}, ..]
+    function generateExecIdOptions(max) {
+        var list = [{value:0, name:'未指定'}];
+        for (var i = 1; i <= max; i++) {
+            list.push({value:i, name:i.toString()});
+        }
+        return list;
+    }
+
+    // Return [1, 2, 3..]
+    //
+    function generateExecIdList(max) {
+        var list = [];
+        for (var i = 1; i <= max; i++) {
+            list.push(i);
+        }
+        return list;
+    }
 
 })
 .filter('filterByName', function() {

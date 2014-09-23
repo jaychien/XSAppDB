@@ -10,7 +10,7 @@ TODO
 
 - 更新資料時的progress indicator
 
-- 動態產生execId相關的資料
+- 動態產生execId相關的資料 (OK)
 
 - 提供 API 說明 (OK)
 
