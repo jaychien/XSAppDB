@@ -1,0 +1,31 @@
+{
+  "name": "XSAppDB",
+  "version": "0.0.1",
+  "homepage": "https://github.com/derektu/XSAppDB",
+  "authors": [
+    "derektu <derektu123@gmail.com>"
+  ],
+  "description": "web site for XSAppDB",
+  "main": "index.html",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.11.2",
+    "angular-markdown-directive": "~0.3.0",
+    "angular-spinner": "~0.5.1",
+    "angular": "~1.2.25",
+    "bootstrap": "~3.2.0",
+    "moment": "~2.8.3",
+    "ng-file-upload": "~1.6.7",
+    "underscore": "~1.7.0"
+  }
+}

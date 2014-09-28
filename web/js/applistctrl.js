@@ -2,10 +2,10 @@
  * Created by Derek on 2014/9/22.
  */
 
-var thisApp = angular.module('AppList', ['angularSpinner']);
-thisApp.controller('AppListCtrl', ['$scope', '$http', 'usSpinnerService', function($scope, $http, spinnerService) {
+angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal', 'usSpinnerService', function($scope, $http, $modal, spinnerService) {
     var url_applist = "/api/applist";
     var url_setappexecid = "/api/setappexecid";
+    var url_setappschedule = "/api/setappschedule";
 
     $scope.appList = [];
     $scope.error = null;
@@ -20,7 +20,11 @@ thisApp.controller('AppListCtrl', ['$scope', '$http', 'usSpinnerService', functi
 
     $http.get(url_applist)
         .success(function(appList) {
-            console.log(appList);
+            _.each(appList, function(app) {
+                app.startTime = $scope.hhmm2moment(app.startTime);
+                app.endTime = $scope.hhmm2moment(app.endTime);
+            });
+
             $scope.appList = appList;
             $scope.error = null;
         })
@@ -86,10 +90,66 @@ thisApp.controller('AppListCtrl', ['$scope', '$http', 'usSpinnerService', functi
         }
     };
 
-    $scope.updateAppItem = function(app) {
-        console.log('Guid=' + app.guid + ' set ExecId=' + app.execId);
+    $scope.hhmm2moment = function(hhmm) {
+        return moment({hour:hhmm/100, minute:hhmm%100});
+    };
+
+    $scope.moment2hhmm = function(mn) {
+        return mn.hour() * 100 + mn.minute();
+    };
+
+    $scope.getStartTimeString = function(app) {
+        return app.startTime.format('HH:mm');
+    };
+
+    $scope.getEndTimeString = function(app) {
+        return app.endTime.format('HH:mm');
+    };
+
+    $scope.showSchedule = function(app) {
+        var modalInstance = $modal.open({
+            templateUrl: 'setSchedule.html',
+            controller: 'SetScheduleController',
+            size: 'sm',
+            resolve: {
+                times: function() {
+                    return [app.startTime.toDate(), app.endTime.toDate()];
+                }
+            }
+        });
+
+        modalInstance.result.then(function(times) {
+            console.log('schedue DB return:' + times[0] + ',' + times[1]);
+
+            app.startTime = moment(times[0]);
+            app.endTime = moment(times[1]);
+
+            $scope.updateAppSchedule(app);
+
+        }, function () {
+
+        });
+    };
+
+    $scope.updateAppExecId = function(app) {
         $scope.startSpinner();
         var url = url_setappexecid + '?guid=' + app.guid + '&execId=' + app.execId;
+        console.log('calling url=' + url);
+        $http.get(url)
+            .success(function() {
+                $scope.error = null;
+                $scope.stopSpinner();
+            })
+            .error(function(error) {
+                $scope.error = error;
+                $scope.stopSpinner();
+            });
+    };
+
+    $scope.updateAppSchedule = function(app) {
+        $scope.startSpinner();
+        var url = url_setappschedule + '?guid=' + app.guid + '&starttime=' + $scope.moment2hhmm(app.startTime) + '&endtime=' + $scope.moment2hhmm(app.endTime);
+        console.log('calling url=' + url);
         $http.get(url)
             .success(function() {
                 $scope.error = null;
@@ -143,7 +203,7 @@ thisApp.controller('AppListCtrl', ['$scope', '$http', 'usSpinnerService', functi
 })
 .filter('filterByPropValue', function() {
     return function(appList, propName, propValue) {
-        console.log('filterByPropValue: propName=' + propName + ' propValue=' + propValue);
+        // console.log('filterByPropValue: propName=' + propName + ' propValue=' + propValue);
         propName = propName || '';
         return _.filter(appList, function(app) {
             if (propName == '')
