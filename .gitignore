@@ -10,6 +10,8 @@ web/bower_components/
 
 *.DSR
 
+*.pyc
+
 # WebStorm file
 #
 workspace.xml
