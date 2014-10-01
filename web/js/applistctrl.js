@@ -5,6 +5,7 @@
 angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal', 'usSpinnerService', function($scope, $http, $modal, spinnerService) {
     var url_applist = "/api/applist";
     var url_setappexecid = "/api/setappexecid";
+    var url_setappmarketstatus = "/api/setappmarketstatus";
     var url_setappschedule = "/api/setappschedule";
 
     $scope.appList = [];
@@ -63,18 +64,6 @@ angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal'
         }
         else {
             return "text-center warn";
-        }
-    };
-
-    $scope.getMarketStatusString = function(app) {
-        if (app.marketStatus == 0) {
-            return "尚未上架";
-        }
-        else if (app.marketStatus == 1) {
-            return "上架";
-        }
-        else {
-            return "下架";
         }
     };
 
@@ -146,6 +135,21 @@ angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal'
             });
     };
 
+    $scope.updateAppMarketStatus = function(app) {
+        $scope.startSpinner();
+        var url = url_setappmarketstatus + '?guid=' + app.guid + '&marketid=' + app.marketId + '&status=' + app.marketStatus;
+        console.log('calling url=' + url);
+        $http.get(url)
+            .success(function() {
+                $scope.error = null;
+                $scope.stopSpinner();
+            })
+            .error(function(error) {
+                $scope.error = error;
+                $scope.stopSpinner();
+            });
+    };
+
     $scope.updateAppSchedule = function(app) {
         $scope.startSpinner();
         var url = url_setappschedule + '?guid=' + app.guid + '&starttime=' + $scope.moment2hhmm(app.startTime) + '&endtime=' + $scope.moment2hhmm(app.endTime);
@@ -174,7 +178,30 @@ angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal'
         spinnerService.stop('spinner');
     };
 
-    // Return [{value:'0', name:'未指定'},{value:'1', name:'1'}, ..]
+    // 未上架的item可以看到全部選項
+    //
+    var marketStatusOptions_All = [
+        {value:0, name:'- 未上架 -'},
+        {value:1, name:'上架'},
+        {value:2, name:'下架'}
+    ];
+
+    // 已經上架的item只能選擇上架/下架
+    //
+    var marketStatusOptions = [
+        {value:1, name:'上架'},
+        {value:2, name:'下架'}
+    ];
+
+    $scope.getMarketStatusOptions = function(app) {
+        if (app.marketStatus == 0)
+            return marketStatusOptions_All;
+        else
+            return marketStatusOptions;
+    };
+
+
+    // Return [{value:0, name:'未指定'},{value:1, name:'1'}, ..]
     function generateExecIdOptions(max) {
         var list = [{value:0, name:'未指定'}];
         for (var i = 1; i <= max; i++) {
@@ -192,7 +219,6 @@ angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal'
         }
         return list;
     }
-
 }])
 .filter('filterByName', function() {
     return function(appList, nameFilter) {

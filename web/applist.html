@@ -67,12 +67,17 @@
                             <td style="vertical-align:middle" class="text-center">{{getTypeString(app)}}</td>
                             <td style="vertical-align:middle">{{app.folder}}</td>
                             <td style="vertical-align:middle"><div>{{app.name}}</div><div>{{app.guid}}</div></td>
-                            <td style="vertical-align:middle" ng-class="getMarketStatusClassName(app)">{{getMarketStatusString(app)}}</td>
+                            <td style="vertical-align:middle" ng-class="getMarketStatusClassName(app)">
+                                <select class="form-control" ng-model="app.marketStatus" ng-change="updateAppMarketStatus(app)">
+                                    <option ng-repeat="obj in getMarketStatusOptions(app)" value="{{obj.value}}" ng-selected="{{obj.value == app.marketStatus}}">{{obj.name}}</option>
+                                </select>
+                            </td>
+
                             <td style="vertical-align:middle" class="text-center">{{app.marketId}}</td>
                             <td style="vertical-align:middle" class="text-center">
-                            <select class="form-control" ng-model="app.execId" ng-change="updateAppExecId(app)">
-                                <option ng-repeat="obj in execIdOptions" value="{{obj.value}}" ng-selected="{{obj.value == app.execId}}">{{obj.name}}</option>
-                            </select>
+                                <select class="form-control" ng-model="app.execId" ng-change="updateAppExecId(app)">
+                                    <option ng-repeat="obj in execIdOptions" value="{{obj.value}}" ng-selected="{{obj.value == app.execId}}">{{obj.name}}</option>
+                                </select>
                             </td>
                             <td style="vertical-align:middle" class="text-center"><a href="#" class="btn" ng-click="showSchedule(app)"><div>{{getStartTimeString(app);}}</div><div>{{getEndTimeString(app);}}</div></a></td>
                         </tr>
@@ -84,6 +89,7 @@
                     <a href="#" ng-click="setPropFilter('','')"><li class="list-group-item"><span class="badge pull-right">{{getTotalCount()}}</span>全部</li></a>
                     <a href="#" ng-click="setPropFilter('marketStatus',1);"><li class="list-group-item"><span class="badge pull-right">{{getMarketStatusCount(1)}}</span>上架</li></a>
                     <a href="#" ng-click="setPropFilter('marketStatus',0);"><li class="list-group-item list-group-item-warning"><span class="badge pull-right">{{getMarketStatusCount(0)}}</span>尚未上架</li></a>
+                    <a href="#" ng-click="setPropFilter('marketStatus',2);"><li class="list-group-item"><span class="badge pull-right">{{getMarketStatusCount(2)}}</span>已經下架</li></a>
                     <a href="#" ng-click="setPropFilter('execId',0);"><li class="list-group-item list-group-item-danger"><span class="badge pull-right">{{getExecCount(0)}}</span>未指定主機</li></a>
                     <a href="#" ng-repeat="execId in execIdList" ng-click="setPropFilter('execId',execId);"><li class="list-group-item list-group-item-info"><span class="badge pull-right">{{getExecCount(execId)}}</span>主機[{{execId}}]</li></a>
                 </ul>
