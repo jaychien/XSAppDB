@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="indexApp">
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,8 +8,13 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
+    <script src="js/env.js"></script>
+    <script>
+        angular.module('indexApp', ['envModule']);
+    </script>
 </head>
 <body>
+    <env></env>
     <div class="container" style="width:80%;">
         <div class="page-header">
             <h3>功能清單</h3>

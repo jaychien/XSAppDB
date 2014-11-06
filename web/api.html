@@ -10,11 +10,13 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="bower_components/showdown/src/showdown.js"></script>
     <script src="bower_components/angular-markdown-directive/markdown.js"></script>
+    <script src="js/env.js"></script>
     <script>
-        angular.module('apiApp', [ 'ngSanitize', 'btford.markdown' ]);
+        angular.module('apiApp', [ 'ngSanitize', 'btford.markdown', 'envModule' ]);
     </script>
 </head>
 <body>
+    <env></env>
     <div class="container">
         <div class="page-header">
             <h3>

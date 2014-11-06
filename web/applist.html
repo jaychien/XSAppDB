@@ -17,14 +17,16 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/moment/min/moment.min.js"></script>
 
+    <script src="js/env.js"></script>
     <script>
-        angular.module('AppList', ['angularSpinner', 'ui.bootstrap']);
+        angular.module('AppList', ['angularSpinner', 'ui.bootstrap', 'envModule']);
     </script>
 
     <script src="js/applistctrl.js"></script>
     <script src="js/setschedulectrl.js"></script>
 </head>
 <body ng-controller="AppListCtrl">
+    <env></env>
     <div class="container">
         <div class="page-header">
             <h3>
@@ -34,9 +36,10 @@
                 </ol>
             </h3>
         </div>
-        <div class="alert alert-danger" ng-show="error">
+        <div class="alert alert-danger" ng-show="error" ng-cloak>
             存取資料時發生錯誤: ({{error}}).
         </div>
+
         <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
 
         <ng-include src="'views/setschedule.html'"></ng-include>

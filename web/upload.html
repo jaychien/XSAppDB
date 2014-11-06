@@ -11,8 +11,9 @@
     <script src="bower_components/ng-file-upload/angular-file-upload.min.js"></script>
     <script src="bower_components/spin.js/spin.js"></script>
     <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+    <script src="js/env.js"></script>
     <script>
-        var thisApp = angular.module('UploadApp', ['angularFileUpload', 'angularSpinner']);
+        var thisApp = angular.module('UploadApp', ['angularFileUpload', 'angularSpinner', 'envModule']);
         thisApp.controller('uploadCtrl', ['$scope', '$upload', 'usSpinnerService', function($scope, $upload, $spinnerService) {
             $scope.error = null;
             $scope.successUploadName = '';
@@ -52,6 +53,7 @@
     </script>
 </head>
 <body ng-controller="uploadCtrl">
+    <env></env>
     <div class="container">
         <div class="page-header">
             <h3>
@@ -62,11 +64,11 @@
             </h3>
         </div>
 
-        <div class="alert alert-danger" role="alert" ng-show="error">
+        <div class="alert alert-danger" role="alert" ng-show="error" ng-cloak>
             上傳資料時發生錯誤: ({{error}}).
         </div>
 
-        <div class="alert alert-success" role="alert" ng-show="successUploadName">
+        <div class="alert alert-success" role="alert" ng-show="successUploadName" ng-cloak>
             {{successUploadName}} 上傳成功
         </div>
 
