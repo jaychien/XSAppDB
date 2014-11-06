@@ -8,6 +8,8 @@ data/
 
 web/bower_components/
 
+config.json
+
 *.DSR
 
 *.pyc
