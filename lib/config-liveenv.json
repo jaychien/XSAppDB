@@ -1,6 +1,6 @@
 {
     "port" : 7001,
     "mongodb" : "mongodb://203.67.19.122/XSAppDB",
-    "marketserver" : "http://210.66.194.90",
+    "marketserver" : "http://192.168.162.49/StoreSvc/",
     "env" : "(正式環境)"
 }
