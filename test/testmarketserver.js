@@ -27,7 +27,7 @@ describe("Test MarketParser", function() {
         });
     });
 
-    it("test getMarketItemsWithSubscription", function(done) {
+    it.skip("test getMarketItemsWithSubscription", function(done) {
         marketServer.getMarketItemsWithSubscription(function(err, result) {
             if (err)
                 throw err;

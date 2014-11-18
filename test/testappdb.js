@@ -114,6 +114,15 @@ describe("Test AppDB", function() {
         });
     });
 
+    it("test importTriggerFromFile", function(done) {
+        var file = './data/trigger/XMLFILE/20141118/SensorTrigger.txt';
+        appDB.importTriggerFromFile(file, function(err) {
+            if (err)
+                throw err;
+            done();
+        });
+    });
+
     function getAllAppObj(done) {
         appDB.getAllAppObj(function(err, appObjs) {
             console.log("getAllAppObj return:");
