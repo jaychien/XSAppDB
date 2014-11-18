@@ -6,6 +6,8 @@
 var chai = require('chai');
 var AppDB = require('../lib/appdb.js');
 var fs = require('fs');
+var moment = require('moment');
+
 var url = 'mongodb://127.0.0.1/XSAppDB';
 var marketserver = 'http://203.67.19.128';
 
@@ -114,11 +116,23 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test importTriggerFromFile", function(done) {
+    it.skip("test importTriggerFromFile", function(done) {
         var file = './data/trigger/XMLFILE/20141118/SensorTrigger.txt';
         appDB.importTriggerFromFile(file, function(err) {
             if (err)
                 throw err;
+            done();
+        });
+    });
+
+    it("test getRecentTriggerCount", function(done) {
+        var dateNow = new Date();
+
+        appDB.getRecentTriggerCount(dateNow, dateNow, function(err, map) {
+            if (err)
+                throw err;
+
+            console.log(map);
             done();
         });
     });
