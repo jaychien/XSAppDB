@@ -107,7 +107,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test setAppMarketItemExecId with value guid", function(done) {
+    it.skip("test setAppMarketItemExecId with value guid", function(done) {
         appDB.setAppMarketItemExecId('88e9f01c-a4fd-4141-acdf-142500f1774b', 1, function(err, result) {
             console.log(err);
             done();
