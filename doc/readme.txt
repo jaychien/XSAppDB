@@ -37,10 +37,10 @@ source:
 
 - 處理方式
 	- 每日定時執行轉檔程式, 把當日的檔案轉入DB內
-		// 提供一支程式可以轉入某一日的檔案
+		// 提供一支程式可以轉入某一日的檔案 (OK : bin/importtrigger.js)
 
-	- 存到MongoDB, DB=XSAppDB, Collection=Trigger 
-		{ guid:"..", "date":.., "symbol":"..", "price":".."}
+	- 存到MongoDB, DB=XSAppDB, Collection=TriggerRecords
+		{ guid:"..", "triggerDate":.., "symbol":"..", "price":".."}
 
 
 

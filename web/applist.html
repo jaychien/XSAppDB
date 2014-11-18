@@ -58,7 +58,7 @@
                         <tr>
                             <td class="text-center"><a href="#" ng-click="orderByField='type';">類型</a></td>
                             <td><a href="#" ng-click="orderByField='folder';">目錄</a></td>
-                            <td><a href="#" ng-click="orderByField='name';">名稱</a></td>
+                            <td><a href="#" ng-click="orderByField='name';">名稱(過去7日觸發次數)</a></td>
                             <td class="text-center"><a href="#" ng-click="orderByField='marketStatus';">上架狀態</a></td>
                             <td class="text-center"><a href="#" ng-click="orderByField='marketId';">編號</a></td>
                             <td class="text-center"><a href="#" ng-click="orderByField='-subscriptionCount';">訂閱</a></td>
@@ -70,7 +70,7 @@
                         <tr ng-repeat="app in appList | filterByName:nameFilter | filterByPropValue:propNameFilter:propValueFilter | orderBy:orderByField">
                             <td style="vertical-align:middle" class="text-center">{{getTypeString(app)}}</td>
                             <td style="vertical-align:middle">{{app.folder}}</td>
-                            <td style="vertical-align:middle"><div>{{app.name}}</div><div>{{app.guid}}</div></td>
+                            <td style="vertical-align:middle"><div><a href="#">{{app.name}}<span class="badge alert-danger">{{app.triggerCount}}</span></a></div><div>{{app.guid}}</div></td>
                             <td style="vertical-align:middle" ng-class="getMarketStatusClassName(app)">
                                 <select class="form-control" ng-model="app.marketStatus" ng-change="updateAppMarketStatus(app)">
                                     <option ng-repeat="obj in getMarketStatusOptions(app)" value="{{obj.value}}" ng-selected="{{obj.value == app.marketStatus}}">{{obj.name}}</option>
