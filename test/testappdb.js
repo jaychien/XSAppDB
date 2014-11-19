@@ -9,7 +9,7 @@ var fs = require('fs');
 var moment = require('moment');
 
 var url = 'mongodb://127.0.0.1/XSAppDB';
-var marketserver = 'http://203.67.19.128';
+var marketserver = 'http://203.67.19.127/StoreSvc/';
 
 describe("Test AppDB", function() {
     var appDB;
@@ -89,7 +89,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it.skip("test get market itemlist", function(done) {
+    it("test get market itemlist", function(done) {
         appDB.getAppMarketItemList(function(err, itemList) {
             if (err != null) {
                 console.log(err);
@@ -125,7 +125,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test getRecentTriggerCount", function(done) {
+    it.skip("test getRecentTriggerCount", function(done) {
         var dateNow = new Date();
 
         appDB.getRecentTriggerCount(dateNow, dateNow, function(err, map) {
