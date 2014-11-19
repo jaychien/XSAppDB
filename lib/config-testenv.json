@@ -1,6 +1,6 @@
 {
     "port" : 8001,
     "mongodb" : "mongodb://203.67.19.122/XSAppDBTest",
-    "marketserver" : "http://203.67.19.127/StrategyStoreSvc/",
+    "marketserver" : "http://203.67.19.127/StoreSvc/",
     "env" : "(測試環境)"
 }
