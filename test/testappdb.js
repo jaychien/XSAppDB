@@ -89,7 +89,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test get market itemlist", function(done) {
+    it.skip("test get market itemlist", function(done) {
         appDB.getAppMarketItemList(function(err, itemList) {
             if (err != null) {
                 console.log(err);
@@ -144,5 +144,17 @@ describe("Test AppDB", function() {
             done();
         });
     }
+
+    it("test getTriggerRecords", function(done) {
+        var guid = '040F575D-A31B-4573-990C-D846F7498019';
+        appDB.getTriggerRecords(guid, 5, function(err, result) {
+            if (err)
+                throw err;
+
+            console.log(result);
+            done();
+        });
+
+    });
 
 });

@@ -3,10 +3,10 @@
  */
 
 angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal', 'usSpinnerService', function($scope, $http, $modal, spinnerService) {
-    var url_applist = "/api/applist";
-    var url_setappexecid = "/api/setappexecid";
-    var url_setappmarketstatus = "/api/setappmarketstatus";
-    var url_setappschedule = "/api/setappschedule";
+    var url_applist = "api/applist";
+    var url_setappexecid = "api/setappexecid";
+    var url_setappmarketstatus = "api/setappmarketstatus";
+    var url_setappschedule = "api/setappschedule";
 
     $scope.appList = [];
     $scope.error = null;

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="triggerListApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XS市集 - 策略觸發記錄</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
+    <!-- for spinner -->
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+
+    <script src="bower_components/moment/min/moment.min.js"></script>
+
+    <script src="js/env.js"></script>
+    <script>
+        var thisApp = angular.module('triggerListApp', ['angularSpinner', 'ngSanitize', 'ngRoute', 'envModule']);
+
+        thisApp.config(function ($routeProvider, $locationProvider) {
+            $locationProvider.html5Mode({
+              enabled: true,
+              requireBase: false
+            });
+        });
+
+        thisApp.controller('TriggerListCtrl', ['$scope', '$http', '$location', 'usSpinnerService',
+            function($scope, $http, $location, spinnerService) {
+
+                $scope.data = {};
+                $scope.error = null;
+
+                var guid = $location.search()['guid'] || '';
+
+                if (guid == '') {
+                    $scope.error = 'missing guid參數 !!';
+                    return;
+                }
+
+                var url_triggerlist = "api/triggerlist?guid=" + guid + "&n=30";
+
+                // TODO: 補API取策略名稱
+                $scope.data.strategyName = 'TODO';
+
+                $scope.data.records = [];
+
+                $scope.startSpinner = function() {
+                    spinnerService.spin('spinner');
+                };
+
+                $scope.stopSpinner = function() {
+                    spinnerService.stop('spinner');
+                };
+
+                $scope.startSpinner();
+                $http.get(url_triggerlist)
+                    .success(function(records) {
+                        $scope.data.records = records;
+                        $scope.error = null;
+                    })
+                    .error(function(error) {
+                        $scope.error = error;
+                    })
+                    .finally(function() {
+                        $scope.stopSpinner();
+                    });
+
+            }]);
+    </script>
+</head>
+<body ng-controller="TriggerListCtrl">
+<env></env>
+<div class="container">
+    <div class="page-header">
+        <h3>
+            <ol class="breadcrumb">
+                <li><a href="index.html" target="_self">Home</a></li>
+                <li><a href="applist.html" target="_self">策略管理</a></li>
+                <li class="active">觸發記錄</li>
+            </ol>
+        </h3>
+    </div>
+    <div class="alert alert-danger" ng-show="error" ng-cloak>
+        讀取資料時發生錯誤: ({{error}}).
+    </div>
+
+    <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
+
+    <table class="table table-striped table-bordered table-hover" ng-hide="error">
+        <thead>
+            <tr>
+                <td class="text-center">日期</td>
+                <td class="text-center">時間</td>
+                <td class="text-center">商品代碼</td>
+                <td class="text-center">觸發價位</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="record in data.records">
+                <td class="text-center">{{record.date}}</td>
+                <td class="text-center">{{record.time}}</td>
+                <td class="text-center">{{record.symbol}}</td>
+                <td class="text-center">{{record.price}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
