@@ -145,18 +145,6 @@ describe("Test AppDB", function() {
 
     });
 
-    it.skip("test getRecentTriggerCount", function(done) {
-        var dateNow = new Date();
-
-        appDB.getRecentTriggerCount(dateNow, dateNow, function(err, map) {
-            if (err)
-                throw err;
-
-            console.log(map);
-            done();
-        });
-    });
-
     it.skip("test getTriggerCount (all)", function(done) {
         var guid = null;
         var dateEnd = new Date();
