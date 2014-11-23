@@ -189,7 +189,7 @@
                 <tr ng-repeat="app in appList | filterByName:nameFilter | filterByPropValue:propNameFilter:propValueFilter | orderBy:orderByField">
                     <td style="vertical-align:middle" class="text-center">{{getTypeString(app)}}</td>
                     <td style="vertical-align:middle">{{app.folder}}</td>
-                    <td style="vertical-align:middle"><div><a ng-href="triggerlist.html?guid={{app.guid}}">{{app.name}}</a></div><div>{{app.guid}}</div></td>
+                    <td style="vertical-align:middle"><div><a ng-href="triggerlist.html?guid={{app.guid}}&name={{app.name}}">{{app.name}}</a></div><div>{{app.guid}}</div></td>
                     <td style="vertical-align:middle" ng-class="getMarketStatusClassName(app)"><div>{{getMarketStatusName(app)}}</div></td>
                     <td style="vertical-align:middle" class="text-center">{{app.marketId}}</td>
                     <td style="vertical-align:middle" class="text-center">{{app.subscriptionCount}}</td>
