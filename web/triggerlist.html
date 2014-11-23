@@ -6,19 +6,27 @@
     <title>XS市集 - 策略觸發記錄</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+    <!-- main angular modules -->
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-    <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+
     <!-- for spinner -->
     <script src="bower_components/spin.js/spin.js"></script>
     <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
 
+    <!-- for angular-strap -->
+    <script src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
+
+    <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="bower_components/moment/min/moment.min.js"></script>
 
     <script src="js/env.js"></script>
     <script>
-        var thisApp = angular.module('triggerListApp', ['angularSpinner', 'ngSanitize', 'ngRoute', 'envModule']);
+        var thisApp = angular.module('triggerListApp', ['angularSpinner', 'mgcrea.ngStrap', 'ngSanitize', 'ngRoute', 'envModule']);
 
         thisApp.config(function ($routeProvider, $locationProvider) {
             $locationProvider.html5Mode({
@@ -33,24 +41,26 @@
                 $scope.data = {};
                 $scope.error = null;
 
-                var guid = $location.search()['guid'] || '';
-
-                if (guid == '') {
+                $scope.guid = $location.search()['guid'] || '';
+                if ($scope.guid == '') {
                     $scope.error = 'missing guid參數 !!';
                     return;
                 }
 
-                // TODO: 先回最近7日
+                // TODO: update strategy name
+                $scope.name = $scope.guid;
+
+                // default range: 最近7日
                 //
-                var endDate = new Date();
-                var startDate = new Date(); startDate.setDate(endDate.getDate()-7);
-
-                var url_triggerlist = "api/triggerlist?guid=" + guid + "&s=" + moment(startDate).format("YYYYMMDD") + "&e=" + moment(endDate).format("YYYYMMDD");
-
-                // TODO: 補API取策略名稱
-                $scope.data.strategyName = 'TODO';
+                $scope.dateEnd = new Date();
+                $scope.dateStart = new Date();
+                $scope.dateStart.setDate($scope.dateEnd.getDate()-7);
 
                 $scope.data.records = [];
+
+                $scope.execQuery = function() {
+                    $scope.query();
+                };
 
                 $scope.startSpinner = function() {
                     spinnerService.spin('spinner');
@@ -60,19 +70,26 @@
                     spinnerService.stop('spinner');
                 };
 
-                $scope.startSpinner();
-                $http.get(url_triggerlist)
-                    .success(function(records) {
-                        $scope.data.records = records;
-                        $scope.error = null;
-                    })
-                    .error(function(error) {
-                        $scope.error = error;
-                    })
-                    .finally(function() {
-                        $scope.stopSpinner();
-                    });
+                $scope.query = function() {
+                    var url_triggerlist = "api/triggerlist?guid=" + $scope.guid + "&s=" + moment($scope.dateStart).format("YYYYMMDD") + "&e=" + moment($scope.dateEnd).format("YYYYMMDD");
 
+                    $scope.error = null;
+                    $http.get(url_triggerlist)
+                        .success(function(records) {
+                            $scope.data.records = records;
+                            $scope.error = null;
+                        })
+                        .error(function(error) {
+                            $scope.error = error;
+                        })
+                        .finally(function() {
+                            $scope.stopSpinner();
+                        });
+                };
+
+                // Run the initial query
+                //
+                $scope.query();
             }]);
     </script>
 </head>
@@ -83,7 +100,7 @@
         <h3>
             <ol class="breadcrumb">
                 <li><a href="index.html" target="_self">Home</a></li>
-                <li><a href="applist.html" target="_self">策略管理</a></li>
+                <li><a href="appsales.html" target="_self">策略紀錄</a></li>
                 <li class="active">觸發記錄</li>
             </ol>
         </h3>
@@ -94,7 +111,25 @@
 
     <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
 
-    <table class="table table-striped table-bordered table-hover" ng-hide="error">
+    <h4>{{name}}</h4>
+
+    <form name="queryForm" class="form-inline" style="padding-bottom: 10px;" novalidate>
+        <div class="form-group" ng-class="{'has-error': queryForm.dateStart.$invalid}">
+            <span class="form-control">開始日期</span>
+            <input type="text" autoclose="true" class="form-control" ng-model="dateStart" name="dateStart" date-format="yyyy/MM/dd"  bs-datepicker>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error': queryForm.dateEnd.$invalid}">
+            <span class="form-control">結束日期</span>
+            <input type="text" autoclose="true" class="form-control" ng-model="dateEnd" name="dateEnd" date-format="yyyy/MM/dd" bs-datepicker>
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" ng-click="execQuery()">開始查詢 <span class="glyphicon glyphicon-search"></span></button>
+        </div>
+    </form>
+
+    <table class="table table-striped table-bordered table-hover" ng-hide="error" ng-cloak="true">
         <thead>
             <tr>
                 <td class="text-center">日期</td>
