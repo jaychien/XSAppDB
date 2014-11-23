@@ -116,7 +116,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it.skip("test importTriggerFromFile", function(done) {
+    it("test importTriggerFromFile", function(done) {
         var file = './data/trigger/XMLFILE/20141118/SensorTrigger.txt';
         appDB.importTriggerFromFile(file, function(err) {
             if (err)
@@ -133,18 +133,6 @@ describe("Test AppDB", function() {
         });
     }
 
-    it.skip("test getTriggerRecords", function(done) {
-        var guid = '040F575D-A31B-4573-990C-D846F7498019';
-        appDB.getTriggerRecords(guid, 5, function(err, result) {
-            if (err)
-                throw err;
-
-            console.log(result);
-            done();
-        });
-
-    });
-
     it.skip("test getTriggerCount (all)", function(done) {
         var guid = null;
         var dateEnd = new Date();
@@ -159,7 +147,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test getTriggerCount (one)", function(done) {
+    it.skip("test getTriggerCount (one)", function(done) {
         var guid = '6b2d96c7-10ff-492b-b003-1d44fead8c8d';
         var dateEnd = new Date();
         var dateStart = new Date(); dateStart.setDate(dateEnd.getDate() - 5);
@@ -172,5 +160,22 @@ describe("Test AppDB", function() {
             done();
         });
     });
+
+    it.skip("test getTriggerRecords", function(done) {
+        var guid = '040F575D-A31B-4573-990C-D846F7498019';
+
+        var dateEnd = new Date();
+        var dateStart = new Date(); dateStart.setDate(dateEnd.getDate() - 5);
+
+        appDB.getTriggerRecords(guid, dateStart, dateEnd, function(err, result) {
+            if (err)
+                throw err;
+
+            console.log(result);
+            done();
+        });
+
+    });
+
 
 });

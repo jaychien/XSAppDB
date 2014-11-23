@@ -40,7 +40,12 @@
                     return;
                 }
 
-                var url_triggerlist = "api/triggerlist?guid=" + guid + "&n=30";
+                // TODO: 先回最近7日
+                //
+                var endDate = new Date();
+                var startDate = new Date(); startDate.setDate(endDate.getDate()-7);
+
+                var url_triggerlist = "api/triggerlist?guid=" + guid + "&s=" + moment(startDate).format("YYYYMMDD") + "&e=" + moment(endDate).format("YYYYMMDD");
 
                 // TODO: 補API取策略名稱
                 $scope.data.strategyName = 'TODO';
