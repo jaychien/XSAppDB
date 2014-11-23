@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html ng-app="AppSales">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XS市集 - 策略執行訂閱狀態查詢</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
+
+    <!-- for spinner -->
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+
+    <!-- for angular.bootstrap.ui -->
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/moment/min/moment.min.js"></script>
+
+    <script src="js/env.js"></script>
+    <script>
+        angular.module('AppSales', ['angularSpinner', 'ui.bootstrap', 'envModule']);
+
+        // TODO: 如何refactor AppSalesCtrl & AppListCtrl
+        //
+        angular.module('AppSales').controller('AppSalesCtrl', ['$scope', '$http', '$modal', 'usSpinnerService', function($scope, $http, $modal, spinnerService) {
+            var url_applist = "api/applist";
+            var url_subscription = "api/subscription";
+            var url_triggercount = "/api/triggercount";
+
+            $scope.appList = [];
+            $scope.error = null;
+            $scope.nameFilter = '';
+            $scope.propNameFilter = '';
+            $scope.propValueFilter = '';
+            $scope.orderByField = '';
+
+            $scope.startSpinner = function() {
+                spinnerService.spin('spinner');
+            };
+
+            $scope.stopSpinner = function() {
+                spinnerService.stop('spinner');
+            };
+
+            $scope.startSpinner();
+            $http.get(url_applist)
+                .then(function(response) {
+                    $scope.appList = response.data;
+                    return $http.get(url_subscription);
+                })
+                .then(function(response) {
+                    $scope.mergeSubscriptionList(response.data);
+
+                    var endDate = new Date();
+                    var startDate = new Date(); startDate.setDate(endDate.getDate()-7);
+
+                    var url = url_triggercount + "?s=" + moment(startDate).format("YYYYMMDD") + "&e=" + moment(endDate).format("YYYYMMDD");
+                    return $http.get(url);
+                })
+                .then(function(response) {
+                    $scope.mergeTriggerCount(response.data);
+                })
+                .catch(function(error) {
+                    $scope.error = error;
+                })
+                .finally(function() {
+                    $scope.stopSpinner();
+                });
+
+            $scope.getTypeString = function(app) {
+                if (app.type == 1) {
+                    return "警示";
+                }
+                else if (app.type == 2) {
+                    return "選股";
+                }
+                else {
+                    return "(" + app.type + ")";
+                }
+            };
+
+            $scope.getMarketStatusClassName = function(app) {
+                if (app.marketStatus == 0) {
+                    return "text-center danger";
+                }
+                else if (app.marketStatus == 1) {
+                    return "text-center info";
+                }
+                else {
+                    return "text-center warning";
+                }
+            };
+
+            $scope.getMarketStatusName = function(app) {
+                if (app.marketStatus == 0) {
+                    return "尚未上架";
+                }
+                else if (app.marketStatus == 1) {
+                    return "上架";
+                }
+                else {
+                    return "(已經下架)";
+                }
+            };
+
+            $scope.mergeSubscriptionList = function(subscriptionList) {
+                _.each($scope.appList, function(app) {
+                    var item = _.find(subscriptionList, function(item) { return item.ID == app.marketId; });
+                    app.subscriptionCount = (item ? item.Count :  0) || 0;
+                });
+            };
+
+            $scope.mergeTriggerCount = function(triggerCountMap) {
+                _.each($scope.appList, function(app) {
+                    var count = parseInt(triggerCountMap[app.guid.toLowerCase()]) || 0;
+                    app.triggerCount = count;
+                });
+            };
+
+            $scope.setPropFilter = function(propName, propValue) {
+                $scope.propNameFilter = propName;
+                $scope.propValueFilter = propValue;
+            };
+
+
+        }])
+        .filter('filterByName', function() {
+            return function(appList, nameFilter) {
+                return _.filter(appList, function(app) {
+                    return app.name.indexOf(nameFilter) >= 0;
+                });
+            };
+        })
+        .filter('filterByPropValue', function() {
+            return function(appList, propName, propValue) {
+                // console.log('filterByPropValue: propName=' + propName + ' propValue=' + propValue);
+                propName = propName || '';
+                return _.filter(appList, function(app) {
+                    if (propName == '')
+                        return app;
+                    else if (app[propName] == propValue)
+                        return app;
+                });
+            };
+        });
+
+    </script>
+
+</head>
+<body ng-controller="AppSalesCtrl">
+    <env></env>
+    <div class="container">
+        <div class="page-header">
+            <h3>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">策略狀態</li>
+                </ol>
+            </h3>
+        </div>
+
+        <div class="alert alert-danger" ng-show="error" ng-cloak>
+            存取資料時發生錯誤: ({{error}}).
+        </div>
+
+        <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
+
+        <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="text" class="form-control" placeholder="輸入策略名稱" ng-model="nameFilter">
+            <div class="input-group-btn">
+                <button class="btn btn-info" ng-click="nameFilter='';"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered table-hover" ng-hide="error">
+            <thead>
+                <tr>
+                    <td class="text-center"><a href="#" ng-click="orderByField='type';">類型</a></td>
+                    <td><a href="#" ng-click="orderByField='folder';">目錄</a></td>
+                    <td><a href="#" ng-click="orderByField='name';">名稱</a></td>
+                    <td class="text-center"><a href="#" ng-click="orderByField='marketStatus';">上架狀態</a></td>
+                    <td class="text-center"><a href="#" ng-click="orderByField='marketId';">編號</a></td>
+                    <td class="text-center">訂閱人數</td>
+                    <td class="text-center">觸發次數(7日)</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="app in appList | filterByName:nameFilter | filterByPropValue:propNameFilter:propValueFilter | orderBy:orderByField">
+                    <td style="vertical-align:middle" class="text-center">{{getTypeString(app)}}</td>
+                    <td style="vertical-align:middle">{{app.folder}}</td>
+                    <td style="vertical-align:middle"><div><a ng-href="triggerlist.html?guid={{app.guid}}">{{app.name}}</a></div><div>{{app.guid}}</div></td>
+                    <td style="vertical-align:middle" ng-class="getMarketStatusClassName(app)"><div>{{getMarketStatusName(app)}}</div></td>
+                    <td style="vertical-align:middle" class="text-center">{{app.marketId}}</td>
+                    <td style="vertical-align:middle" class="text-center">{{app.subscriptionCount}}</td>
+                    <td style="vertical-align:middle" class="text-center">{{app.triggerCount}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

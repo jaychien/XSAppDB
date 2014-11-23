@@ -63,7 +63,7 @@ angular.module('AppList').controller('AppListCtrl', ['$scope', '$http', '$modal'
             return "text-center info";
         }
         else {
-            return "text-center warn";
+            return "text-center warning";
         }
     };
 

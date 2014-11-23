@@ -125,6 +125,26 @@ describe("Test AppDB", function() {
         });
     });
 
+    function getAllAppObj(done) {
+        appDB.getAllAppObj(function(err, appObjs) {
+            console.log("getAllAppObj return:");
+            console.log(appObjs);
+            done();
+        });
+    }
+
+    it.skip("test getTriggerRecords", function(done) {
+        var guid = '040F575D-A31B-4573-990C-D846F7498019';
+        appDB.getTriggerRecords(guid, 5, function(err, result) {
+            if (err)
+                throw err;
+
+            console.log(result);
+            done();
+        });
+
+    });
+
     it.skip("test getRecentTriggerCount", function(done) {
         var dateNow = new Date();
 
@@ -137,24 +157,32 @@ describe("Test AppDB", function() {
         });
     });
 
-    function getAllAppObj(done) {
-        appDB.getAllAppObj(function(err, appObjs) {
-            console.log("getAllAppObj return:");
-            console.log(appObjs);
-            done();
-        });
-    }
+    it.skip("test getTriggerCount (all)", function(done) {
+        var guid = null;
+        var dateEnd = new Date();
+        var dateStart = new Date(); dateStart.setDate(dateEnd.getDate() - 5);
 
-    it("test getTriggerRecords", function(done) {
-        var guid = '040F575D-A31B-4573-990C-D846F7498019';
-        appDB.getTriggerRecords(guid, 5, function(err, result) {
+        appDB.getTriggerCount(guid, dateStart, dateEnd, function(err, map) {
             if (err)
                 throw err;
 
-            console.log(result);
+            console.log(map);
             done();
         });
+    });
 
+    it("test getTriggerCount (one)", function(done) {
+        var guid = '6b2d96c7-10ff-492b-b003-1d44fead8c8d';
+        var dateEnd = new Date();
+        var dateStart = new Date(); dateStart.setDate(dateEnd.getDate() - 5);
+
+        appDB.getTriggerCount(guid, dateStart, dateEnd, function(err, map) {
+            if (err)
+                throw err;
+
+            console.log(map);
+            done();
+        });
     });
 
 });
