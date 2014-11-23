@@ -42,6 +42,42 @@ source:
 	- 存到MongoDB, DB=XSAppDB, Collection=TriggerRecords
 		{ guid:"..", "triggerDate":.., "symbol":"..", "price":".."}
 
+- 顯示方式
+	- 每個策略上面顯示最近N日(N=7)觸發的訊號次數
+	- 點入後可以顯示最近一個月的訊號明細 & 簡單的統計(以後可以改成page-based)
+	- 明細顯示方式
+		- 日期, 時間, 商品, 價位, 當日賺賠, 5日後賺賠, 10日後賺賠
+
+
+===================
+TODO
+===================
+- 提供轉檔的api (從ftp server抓資料轉入mongodb)
+- 提供排程 (寫在node app裡面)
+- 提供轉檔的畫面
+	- 選擇日期/範圍, server, 執行轉檔動作
+
+- 觸發記錄的顯示
+	- 顯示策略的summary顯示
+	- 顯示觸發的股票名稱
+	- 顯示N日損益
+
+	- 顯示更多的資訊(maybe use tab ?)
+		- 觸發明細 (顯示觸發記錄, 損益)
+		- 統計資料 (用線圖?來顯示觸發的情形, 總損益可以畫線)
+		- ..
+
+- 其他可以做的東西
+	- subscription的趨勢
+		- 每日的subscription趨勢
+		- hottest subscription
+		- 每個策略的subscription趨勢
+
+
+
+
+
+
 
 
 
