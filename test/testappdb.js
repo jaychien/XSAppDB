@@ -5,6 +5,7 @@
 
 var chai = require('chai');
 var AppDB = require('../lib/appdb.js');
+var MarketServer = require('../lib/marketserver.js');
 var fs = require('fs');
 var moment = require('moment');
 
@@ -15,7 +16,7 @@ describe("Test AppDB", function() {
     var appDB;
 
     before(function(done) {
-        appDB = new AppDB({mongodb: url, marketserver: marketserver});
+        appDB = new AppDB(url, new MarketServer(marketserver));
         appDB.on('ready', function(err) {
             done(err);
         });
@@ -116,7 +117,7 @@ describe("Test AppDB", function() {
         });
     });
 
-    it("test importTriggerFromFile", function(done) {
+    it.skip("test importTriggerFromFile", function(done) {
         var file = './data/trigger/XMLFILE/20141118/SensorTrigger.txt';
         appDB.importTriggerFromFile(file, function(err) {
             if (err)
