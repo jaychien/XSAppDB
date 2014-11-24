@@ -2,6 +2,8 @@
     "port" : 7001,
     "mongodb" : "mongodb://203.67.19.122/XSAppDB",
     "marketserver" : "http://192.168.162.49/StoreSvc/",
-    "triggerimport" : { "server": "192.168.180.141", "user": "sysjust", "pass": "sysjust" },
+    "triggerimport" : {
+        "server": "192.168.180.141", "user": "sysjust", "pass": "sysjust",
+        "schedules" : [ 1400, 1500, 1600, 1700, 2000 ] },
     "env" : "(正式環境)"
 }
