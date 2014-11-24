@@ -73,7 +73,9 @@
                 $scope.query = function() {
                     var url_triggerlist = "api/triggerlist?guid=" + $scope.guid + "&s=" + moment($scope.dateStart).format("YYYYMMDD") + "&e=" + moment($scope.dateEnd).format("YYYYMMDD");
 
+                    $scope.startSpinner();
                     $scope.error = null;
+
                     $http.get(url_triggerlist)
                         .success(function(records) {
                             $scope.data.records = records;
@@ -111,7 +113,7 @@
 
     <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
 
-    <h3>{{name}}</h3>
+    <h3 ng-cloak>{{name}}</h3>
 
     <form name="queryForm" class="form-inline" style="padding-bottom: 10px;" novalidate>
         <div class="form-group" ng-class="{'has-error': queryForm.dateStart.$invalid}">

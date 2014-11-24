@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="ImportTrigger">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XS市集 - 手動匯入策略觸發記錄</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+    <!-- main angular modules -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+
+    <!-- for spinner -->
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+
+    <!-- for angular-strap -->
+    <script src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
+
+    <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="bower_components/moment/min/moment.min.js"></script>
+
+    <script src="js/env.js"></script>
+    <script>
+        var thisApp = angular.module('ImportTrigger', ['angularSpinner', 'mgcrea.ngStrap', 'envModule']);
+        thisApp.controller('ImportTriggerCtrl', ['$scope', '$http', 'usSpinnerService',
+            function($scope, $http, spinnerService) {
+
+                $scope.dateQuery = new Date();
+                $scope.error = null;
+                $scope.importDone = false;
+
+                $scope.startSpinner = function () {
+                    spinnerService.spin('spinner');
+                };
+
+                $scope.stopSpinner = function () {
+                    spinnerService.stop('spinner');
+                };
+
+                $scope.execImport = function () {
+                    $scope.importDone = false;
+                    $scope.error = false;
+
+                    var url = "api/importtrigger?date=" + moment($scope.dateQuery).format("YYYYMMDD");
+
+                    $scope.startSpinner();
+                    $http.get(url)
+                        .success(function(records) {
+                            $scope.importDone = true;
+                            $scope.error = null;
+                        })
+                        .error(function(error) {
+                            $scope.error = error;
+                        })
+                        .finally(function() {
+                            $scope.stopSpinner();
+                        });
+                };
+            }
+        ]);
+    </script>
+</head>
+<body ng-controller="ImportTriggerCtrl">
+    <env></env>
+    <div class="container">
+        <div class="page-header">
+            <h3>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">匯入觸發記錄</li>
+                </ol>
+            </h3>
+        </div>
+
+        <div class="alert alert-danger" ng-show="error" ng-cloak>
+            執行時發生錯誤: ({{error}}).
+        </div>
+
+        <span us-spinner="{radius:30, width:10, length:0, line:10}" spinner-key="spinner"></span>
+
+        <form name="queryForm" class="form-inline" style="padding-bottom: 10px;" novalidate>
+            <div class="form-group" ng-class="{'has-error': queryForm.dateQuery.$invalid}">
+                <label for="dateQuery">轉檔日期</label>
+                <input type="text" autoclose="true" class="form-control" ng-model="dateQuery" id="dateQuery" name="dateQuery" date-format="yyyy/MM/dd" bs-datepicker>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" ng-click="execImport()">開始轉檔 <span class="glyphicon glyphicon-search"></span></button>
+            </div>
+            <span class="form-control alert-error" ng-show="importDone" ng-cloak style="margin-left:20px;">  轉檔成功!!  </span>
+        </form>
+
+    </div>
+</body>
+</html>

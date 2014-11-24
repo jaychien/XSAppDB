@@ -2,5 +2,6 @@
     "port" : 8001,
     "mongodb" : "mongodb://203.67.19.122/XSAppDBTest",
     "marketserver" : "http://203.67.19.128/StoreSvc/",
+    "triggerimport" : { "server": "192.168.180.141", "user": "sysjust", "pass": "sysjust" },
     "env" : "(測試環境)"
 }
